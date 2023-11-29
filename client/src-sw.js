@@ -25,6 +25,19 @@ warmStrategyCache({
 });
 
 registerRoute(({ request }) => request.mode === 'navigate', pageCache);
+const assetsCache = new offlineFallback({
+  cacheName: 'assets-cache',
+  plugins: [
+    new CacheableResponsePlugin({
+      statuses: [0, 200],
+    }),
+    new ExpirationPlugin({
+      maxAgeSeconds: 7 * 24 * 60 * 60, // 7 days
+    }),
+  ],
+});
 
-// TODO: Implement asset caching
-registerRoute();
+registerRoute(
+/\.(?:js|css|png|jpg|jpeg|gif|svg|webp)$/,
+assetsCache
+);
