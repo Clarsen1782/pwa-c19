@@ -12,55 +12,25 @@ const initdb = async () =>
     },
   });
 
-  export const postDb = async (content) => {
+export const putDb = async (content) => {
   console.log('Post to the jate');
   const jateDb = await openDB('jate', 1);
   const tx = jateDb.transaction('jate', 'readwrite');
   const store = tx.objectStore('jate');
-  const request = store.add({ jate: content });
+  const request = store.put({ id: 1, value: content });
   const result = await request;
   console.log('Data saved to the database', result);
 };
 
-export const getAllDb = async () => {
-  console.log('GET all from the database');
-  const jateDb = await openDB('jate', 1);
-  const tx = jateDb.transaction('jate', 'readonly');
-  const store = tx.objectStore('jate');
-  const request = store.getAll();
-  const result = await request;
-  console.log('result.value', result);
-  return result;
-};
-export const getOneDb = async (id) => {
+export const getDb = async () => {
   console.log('GET from the database');
   const jateDb = await openDB('jate', 1);
   const tx = jateDb.transaction('jate', 'readonly');
   const store = tx.objectStore('jate');
-  const request = store.get(id);
+  const request = store.get(1);
   const result = await request;
   console.log('result.value', result);
-  return result;
-};
-export const deleteDb = async (id) => {
-  console.log('DELETE from the database', id);
-  const jateDb = await openDB('jate', 1);
-  const tx = jateDb.transaction('jate', 'readwrite');
-  const store = tx.objectStore('jate');
-  const request = store.delete(id);
-  const result = await request;
-  console.log('result.value', result);
-  return result;
-};
-
-export const putDb = async (id, content) => {
-  console.log('PUT to the database');
-  const jateDb = await openDB('jate', 1);
-  const tx = jateDb.transaction('jate', 'readwrite');
-  const store = tx.objectStore('jate');
-  const request = store.put({ id: id, todo: content });
-  const result = await request;
-  console.log('Data saved to the database', result);
+  return result?.value;
 };
 
 initdb();
